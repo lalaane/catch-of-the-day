@@ -35,7 +35,7 @@ class App extends React.Component {
 		base.removeBinding(this.ref);
 	}
 
-	addFish = (fish) => {
+	addFish = fish => {
 		// take a copy of the existing state
 		const fishes = { ...this.state.fishes };
 		// add our new fish to fishes variable
@@ -47,7 +47,16 @@ class App extends React.Component {
 		this.setState({ fishes: sampleFishes });
 	};
 
-	addToOrder = (key) => {
+	updateFish = (key, updatedFish) => {
+		// take a copy of the current state
+		const fishes = { ...this.state.fishes };
+		// update that state
+		fishes[key] = updatedFish;
+		// set that to state
+		this.setState({ fishes });
+	};
+
+	addToOrder = key => {
 		// copy of state
 		const order = { ...this.state.order };
 		// either add to the order, or update the number in our order
@@ -62,13 +71,18 @@ class App extends React.Component {
 				<div className='menu'>
 					<Header tagline='Fresh seafood market' />
 					<ul className='fishes'>
-						{Object.keys(this.state.fishes).map((key) => (
+						{Object.keys(this.state.fishes).map(key => (
 							<Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder} />
 						))}
 					</ul>
 				</div>
 				<Order fishes={this.state.fishes} order={this.state.order} />
-				<Inventory addFish={this.addFish} loadSampleFishes={this.loadSampleFishes} />
+				<Inventory
+					addFish={this.addFish}
+					updateFish={this.updateFish}
+					loadSampleFishes={this.loadSampleFishes}
+					fishes={this.state.fishes}
+				/>
 			</div>
 		);
 	}
